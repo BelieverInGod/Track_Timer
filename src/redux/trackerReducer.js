@@ -45,7 +45,7 @@ const trackerReducer = (state = initialState, action) => {
         case SET_LOCAL_DATA:
             return {
                 ...state,
-                trackerList: [...state.trackerList, action.locData],
+                trackerList: [...state.trackerList, ...action.locData],
             }    
             
         default:

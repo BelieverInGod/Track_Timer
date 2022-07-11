@@ -20,25 +20,24 @@ function Tracker(props) {
         const arrLenght = props.trackerList.trackerList.length
         const id = arrLenght === 0 ? 0 : props.trackerList.trackerList[arrLenght -1].id
         
-        props.saveTrackName(props.newTrackName, time, id + 1)
+        props.saveTrackName(props.newTrackName, time, id + 1, true)
     }
     const onDeleteTracker = (id) => {
-        
+
         props.deleteTracker(id)
     }
 
     console.log(props.trackerList)
 
     useEffect(() => {
-        // const items = {...localStorage}
-        // Object.entries(items).forEach(item => {
-        //    setLocalData(item[1])
-        //    console.log(setLocalData(item[1]))
-        // })
-        const items = Object.keys(localStorage).reduce((obj, k) => {
-            return { ...obj, [k]: JSON.parse(localStorage.getItem(k))}}, {});
-        console.log(items)
-        setLocalData({items})
+        if(props) {
+            const items = Object.keys(localStorage).reduce((acc, k) => {
+                acc.push(JSON.parse(localStorage.getItem(k)))
+                return acc
+            }, []);
+            console.log(items)
+            props.setLocalData(items)
+        }
     }, [])
 
     return (<div>
@@ -69,7 +68,6 @@ function Tracker(props) {
         </div>
     )
 }
-
     const mapStateToProps = (state) => ({
     trackerList: state.trackerList,
     newTrackName: state.trackerList.newTrackName
@@ -80,17 +78,17 @@ const mapDispatchToProps = (dispatch) => {
         sendMessage: (newMessageBody) => {
             dispatch(setTrackerName(newMessageBody));
         },
-        saveTrackName: (data, time, id) => {
-            dispatch(saveTracker(data, time, id))
-            localStorage.setItem(id, JSON.stringify({ id: id, trackName: data, time: 0, buttonControl: true}))
+        saveTrackName: (data, time, id, buttonControl) => {
+            dispatch(saveTracker(data, time, id, true))
+            localStorage.setItem(id, JSON.stringify({ id: id, trackName: data, time: 0, buttonControl: buttonControl}))
         },
         deleteTracker: (id) => {
             dispatch(deleteTrackerName(id))
             localStorage.removeItem(id)
         },
-        setSecondTimer: (sec, id, data) => {
-            dispatch(setSecondTimer(sec, id))
-            localStorage.setItem(id, JSON.stringify({ id: id, trackName: data, time: sec, buttonControl: true}))
+        setSecondTimer: (sec, id, data, buttonControl) => {
+            dispatch(setSecondTimer(sec, id, buttonControl))
+            localStorage.setItem(id, JSON.stringify({ id: id, trackName: data, time: sec, buttonControl: buttonControl}))
         },
         setLocalData: (locData) => {
             dispatch(setLocalData(locData))

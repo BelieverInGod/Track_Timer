@@ -31,15 +31,16 @@ const Post = (props) => {
     const localData = JSON.parse(localStorage.getItem(props.id));
     console.log(localData)
     const [time, setTime] = useState(parseInt(localData.time))
-    const [status, setStatus] = useState('stop')
+    const [status, setStatus] = useState(props.buttonControl)
     let sec;
 
     useEffect(() => {
-        if (status === 'start') {
+        if (status === true) {
             sec = setInterval(() => {
                 setTime((s) => s + 1);
+                props.setSecondTimer(time, props.id, props.trackName, status)
             }, 1000);
-        } else if (status === 'stop') {
+        } else if (status === false) {
             clearInterval(sec)
         }
         return () => clearInterval(sec);
@@ -66,14 +67,14 @@ const Post = (props) => {
                 <ListItemText primary={props.trackName}/>
                 <ListItemText primary={formTime}/>
                 <ListItemIcon>
-                    {status === 'start' ?
+                    {status === true ?
                         <IconButtons color={"info"} onClick={() => {
-                            setStatus('stop')
-                            return props.setSecondTimer(time, props.id, props.trackName)
+                            setStatus(false)
+                            return props.setSecondTimer(time, props.id, props.trackName, false)
                         }}
 
                                      typeIcon={<PauseCircleOutlineIcon sx={{width: "100%", height: '100%'}}/>}/> :
-                        <IconButtons color={"success"} onClick={() => setStatus('start')}
+                        <IconButtons color={"success"} onClick={() => setStatus(true)}
                                      typeIcon={<PlayCircleOutlineIcon sx={{width: "100%", height: '100%'}}/>}/>
                     }
                 </ListItemIcon>
@@ -94,7 +95,7 @@ const Post = (props) => {
 
 function TrackerList(props) {
     let listitem = props.data.trackerList.map(x =>
-        <Post key={x.id} deleteTracker={props.deleteTracker} id={x.id} list={x.buttonControl} trackName={x.trackName}
+        <Post key={x.id} deleteTracker={props.deleteTracker} id={x.id} buttonControl={x.buttonControl} trackName={x.trackName}
               time={x.time} setSecondTimer={props.setSecondTimer}/>)
     return (
         <List sx={style} component="nav" aria-label="mailbox folders">

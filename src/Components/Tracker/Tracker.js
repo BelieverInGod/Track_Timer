@@ -6,17 +6,23 @@ import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import {connect} from "react-redux";
 import {deleteTrackerName, saveTracker, setSecondTimer, setTrackerName, setLocalData} from "../../redux/trackerReducer";
 import TrackerList from "../TrackerList/TrackerList";
+import moment from 'moment';
 
 function Tracker(props) {
+
+    const momentName = moment().format('lll');
+
+    console.log(momentName)
 
     const onChange = (e) => {
         let body = e.target.value
         props.sendMessage(body)
     }
+
     const onSubmit = () => {
         const arrLenght = props.trackerList.trackerList.length
         const id = arrLenght === 0 ? 0 : props.trackerList.trackerList[arrLenght -1].id
-        props.saveTrackName(props.newTrackName || `Tracker N${id + 1}`, 0 , id + 1, true, Date.now())
+        props.saveTrackName(props.newTrackName || momentName, 0 , id + 1, true, Date.now())
     }
     const onDeleteTracker = (id) => {
 
@@ -41,7 +47,6 @@ function Tracker(props) {
                         id="outlined-adornment-weight"
                         value={props.newTrackName}
                         onChange={onChange}
-                        onKeyPress={onSubmit}
                         placeholder='Enter tracker name'
                         endAdornment={
                             <InputAdornment position="end">

@@ -6,28 +6,24 @@ import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import {connect} from "react-redux";
 import {deleteTrackerName, saveTracker, setSecondTimer, setTrackerName, setLocalData} from "../../redux/trackerReducer";
 import TrackerList from "../TrackerList/TrackerList";
-import moment from "moment";
 
 function Tracker(props) {
 
-    const time = moment().format('LTS');
+    
     const onChange = (e) => {
         let body = e.target.value
-        console.log(body)
         props.sendMessage(body)
     }
     const onSubmit = () => {
         const arrLenght = props.trackerList.trackerList.length
         const id = arrLenght === 0 ? 0 : props.trackerList.trackerList[arrLenght -1].id
         
-        props.saveTrackName(props.newTrackName, time, id + 1, true)
+        props.saveTrackName(props.newTrackName, 0 , id + 1, true, Date.now())
     }
     const onDeleteTracker = (id) => {
 
         props.deleteTracker(id)
     }
-
-    console.log(props.trackerList)
 
     useEffect(() => {
         if(props) {
@@ -64,7 +60,7 @@ function Tracker(props) {
                     />
                 </FormControl>
             </Box>
-            <TrackerList deleteTracker={onDeleteTracker} data={props.trackerList} setSecondTimer={props.setSecondTimer}/>
+            <TrackerList deleteTracker={onDeleteTracker} data={props.trackerList} setSecondTimer={props.setSecondTimer} setLocalData={props.setLocalData}/>
         </div>
     )
 }
@@ -78,17 +74,19 @@ const mapDispatchToProps = (dispatch) => {
         sendMessage: (newMessageBody) => {
             dispatch(setTrackerName(newMessageBody));
         },
-        saveTrackName: (data, time, id, buttonControl) => {
+        saveTrackName: (data, time, id, buttonControl, timeStart) => {
             dispatch(saveTracker(data, time, id, true))
-            localStorage.setItem(id, JSON.stringify({ id: id, trackName: data, time: 0, buttonControl: buttonControl}))
+            localStorage.setItem(id, JSON.stringify({ id: id, trackName: data, time: 0, buttonControl: buttonControl,
+                 timeStart: timeStart}))
         },
         deleteTracker: (id) => {
             dispatch(deleteTrackerName(id))
             localStorage.removeItem(id)
         },
-        setSecondTimer: (sec, id, data, buttonControl) => {
+        setSecondTimer: (sec, id, data, buttonControl, timeStart, timeEnd ) => {
             dispatch(setSecondTimer(sec, id, buttonControl))
-            localStorage.setItem(id, JSON.stringify({ id: id, trackName: data, time: sec, buttonControl: buttonControl}))
+            localStorage.setItem(id, JSON.stringify({ id: id, trackName: data, time: sec, buttonControl: buttonControl,
+             timeStart: timeStart}))
         },
         setLocalData: (locData) => {
             dispatch(setLocalData(locData))

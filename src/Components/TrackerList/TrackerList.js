@@ -30,15 +30,20 @@ const IconButtons = (props) => {
 const Post = (props) => {
     const localData = JSON.parse(localStorage.getItem(props.id));
     console.log(localData)
-    const [time, setTime] = useState(parseInt(localData.time))
-    const [status, setStatus] = useState(props.buttonControl)
+    const curruntTime = localData.buttonControl ?
+                        (Date.now() - localData.timeStart) / 1000 + localData.time  :
+                        localData.time               
+                        
+    const [time, setTime] = useState(parseInt(parseInt(curruntTime)))
+    const [status, setStatus] = useState(localData.buttonControl)
     let sec;
+
+    console.log(Date.now() - localData.timeStart )
 
     useEffect(() => {
         if (status === true) {
             sec = setInterval(() => {
                 setTime((s) => s + 1);
-                props.setSecondTimer(time, props.id, props.trackName, status)
             }, 1000);
         } else if (status === false) {
             clearInterval(sec)
@@ -70,11 +75,14 @@ const Post = (props) => {
                     {status === true ?
                         <IconButtons color={"info"} onClick={() => {
                             setStatus(false)
-                            return props.setSecondTimer(time, props.id, props.trackName, false)
+                            return props.setSecondTimer(time, props.id, props.trackName, false , localData.timeStart)
                         }}
-
-                                     typeIcon={<PauseCircleOutlineIcon sx={{width: "100%", height: '100%'}}/>}/> :
-                        <IconButtons color={"success"} onClick={() => setStatus(true)}
+                            typeIcon={<PauseCircleOutlineIcon sx={{width: "100%", height: '100%'}}/>}/> :
+                        <IconButtons color={"success"} onClick={() => {
+                            setStatus(true)
+                            return props.setSecondTimer(time, props.id, props.trackName, true, Date.now())
+                            }
+                        }
                                      typeIcon={<PlayCircleOutlineIcon sx={{width: "100%", height: '100%'}}/>}/>
                     }
                 </ListItemIcon>

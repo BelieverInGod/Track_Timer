@@ -9,16 +9,18 @@ import TrackerList from "../TrackerList/TrackerList";
 import moment from 'moment';
 
 function Tracker(props) {
-
     const momentName = moment().format('lll');
-
-    console.log(momentName)
 
     const onChange = (e) => {
         let body = e.target.value
         props.sendMessage(body)
     }
 
+    function handleKeyPress(e) {
+        if (e.key === "Enter") {
+            onSubmit()
+        }
+    }
     const onSubmit = () => {
         const arrLenght = props.trackerList.trackerList.length
         const id = arrLenght === 0 ? 0 : props.trackerList.trackerList[arrLenght -1].id
@@ -47,6 +49,7 @@ function Tracker(props) {
                         id="outlined-adornment-weight"
                         value={props.newTrackName}
                         onChange={onChange}
+                        onKeyPress={(e) => handleKeyPress(e)}
                         placeholder='Enter tracker name'
                         endAdornment={
                             <InputAdornment position="end">

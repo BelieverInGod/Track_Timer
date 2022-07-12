@@ -1,26 +1,36 @@
-import './Tracker.css'
 import { useEffect } from 'react';
 import * as React from 'react';
-import {Box, IconButton, InputAdornment, FormControl, OutlinedInput} from '@mui/material';
-import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import {connect} from "react-redux";
 import {deleteTrackerName, saveTracker, setSecondTimer, setTrackerName, setLocalData} from "../../redux/trackerReducer";
 import TrackerList from "../TrackerList/TrackerList";
+import moment from 'moment';
+import InputBox from "./InputBox/InputBox";
 
-function Tracker(props) {
+function TrackerContainer(props) {
+    const momentName = moment().format('llll');
 
     const onChange = (e) => {
         let body = e.target.value
         props.sendMessage(body)
     }
-    const onSubmit = () => {
-        const arrLenght = props.trackerList.trackerList.length
-        const id = arrLenght === 0 ? 0 : props.trackerList.trackerList[arrLenght -1].id
-        
-        props.saveTrackName(props.newTrackName, 0 , id + 1, true, Date.now())
-    }
-    const onDeleteTracker = (id) => {
 
+    function handleKeyPress(e) {
+        if (e.key === "Enter") onSubmit()
+    }
+
+    const onSubmit = () => {
+        if (props.newTrackName.length < 30){
+            const arrLenght = props.trackerList.trackerList.length
+            const id = arrLenght === 0 ? 0 : props.trackerList.trackerList[arrLenght -1].id
+            props.saveTrackName(props.newTrackName || momentName, 0 , id + 1, true, Date.now())
+
+        } else if (props.newTrackName.length > 30){
+            console.log('MNOGO')
+        }
+
+    }
+
+    const onDeleteTracker = (id) => {
         props.deleteTracker(id)
     }
 
@@ -35,29 +45,7 @@ function Tracker(props) {
     }, [])
 
     return (<div>
-            <Box sx={{width: 500, maxWidth: '100%'}}>
-                <FormControl sx={{width: '100%'}} variant="outlined">
-                    <OutlinedInput
-                        sx={{borderRadius: '50px', paddingRight: '10px'}}
-                        id="outlined-adornment-weight"
-                        value={props.newTrackName}
-                        onChange={onChange}
-                        placeholder='Enter tracker name'
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    color="success"
-                                    sx={{width: "60px", height: '60px', padding: 0,}}
-                                    onClick={onSubmit}
-                                    edge="end"
-                                >
-                                    <PlayCircleFilledIcon sx={{width: "100%", height: '100%'}}/>
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                    />
-                </FormControl>
-            </Box>
+            <InputBox newTrackName={props.newTrackName} onChange={onChange} handleKeyPress={handleKeyPress} onSubmit={onSubmit}/>
             <TrackerList deleteTracker={onDeleteTracker} data={props.trackerList} setSecondTimer={props.setSecondTimer} setLocalData={props.setLocalData}/>
         </div>
     )
@@ -92,4 +80,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Tracker);
+export default connect(mapStateToProps, mapDispatchToProps)(TrackerContainer);

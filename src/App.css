@@ -2,9 +2,9 @@
     transition: 2s;
 }
 
-@media screen and (max-width: 1300px) {
+@media screen and (max-width: 560px) {
     .App {
-      width: 350px;
+      width: 300px;
       transition: 2s;
     }
 }

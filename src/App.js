@@ -1,12 +1,12 @@
 import './App.css';
 import Header from './Components/Header/Header'
-import Tracker from './Components/Tracker/Tracker'
+import TrackerContainer from './Components/Tracker/TrackerContainer'
 
 function App() {
   return (
     <div className="App">
       <Header/>
-      <Tracker/>
+      <TrackerContainer/>
     </div>
   );
 }

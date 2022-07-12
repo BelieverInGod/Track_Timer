@@ -9,7 +9,6 @@ import TrackerList from "../TrackerList/TrackerList";
 
 function Tracker(props) {
 
-    
     const onChange = (e) => {
         let body = e.target.value
         props.sendMessage(body)

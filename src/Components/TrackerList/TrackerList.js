@@ -91,7 +91,6 @@ const Post = (props) => {
                         color="error"
                         sx={{width: "40px", height: '40px', padding: 0,}}
                         onClick={() => props.deleteTracker(props.id)}
-                        // onMouseDown={handleMouseDownPassword}
                         edge="end"
                     ><HighlightOffIcon sx={{width: "100%", height: '100%'}}/></IconButton>
                 </ListItemIcon>

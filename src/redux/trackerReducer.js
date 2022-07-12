@@ -4,8 +4,6 @@ const DELETE_TRACKER_NAME = 'DELETE_TRACKER_NAME'
 const SET_SEC_TIMER = 'SET_SEC_TIMER'
 const SET_LOCAL_DATA = 'SET_LOCAL_DATA'
 
-
-
 const initialState = {
     trackerList: [],
     newTrackName: '',

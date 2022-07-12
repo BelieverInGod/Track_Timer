@@ -16,8 +16,7 @@ function Tracker(props) {
     const onSubmit = () => {
         const arrLenght = props.trackerList.trackerList.length
         const id = arrLenght === 0 ? 0 : props.trackerList.trackerList[arrLenght -1].id
-        
-        props.saveTrackName(props.newTrackName, 0 , id + 1, true, Date.now())
+        props.saveTrackName(props.newTrackName || `Tracker N${id + 1}`, 0 , id + 1, true, Date.now())
     }
     const onDeleteTracker = (id) => {
 
@@ -42,6 +41,7 @@ function Tracker(props) {
                         id="outlined-adornment-weight"
                         value={props.newTrackName}
                         onChange={onChange}
+                        onKeyPress={onSubmit}
                         placeholder='Enter tracker name'
                         endAdornment={
                             <InputAdornment position="end">

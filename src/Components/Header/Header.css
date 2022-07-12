@@ -4,4 +4,14 @@
     margin-bottom: 50px;
     font-size: 50px;
     font-family: 'Courier New', Courier, monospace;
+    transition: 2s;
+}
+
+@media screen and (max-width: 1300px) {
+    .header {
+      background: black;
+      color:white;
+      transition: 2s;
+      border-radius: 5px;
+    }
 }

@@ -29,16 +29,12 @@ const IconButtons = (props) => {
 
 const Post = (props) => {
     const localData = JSON.parse(localStorage.getItem(props.id));
-    console.log(localData)
     const curruntTime = localData.buttonControl ?
                         (Date.now() - localData.timeStart) / 1000 + localData.time  :
-                        localData.time               
-                        
+                        localData.time;                       
     const [time, setTime] = useState(parseInt(parseInt(curruntTime)))
     const [status, setStatus] = useState(localData.buttonControl)
     let sec;
-
-    console.log(Date.now() - localData.timeStart )
 
     useEffect(() => {
         if (status === true) {
@@ -77,7 +73,7 @@ const Post = (props) => {
                             setStatus(false)
                             return props.setSecondTimer(time, props.id, props.trackName, false , localData.timeStart)
                         }}
-                            typeIcon={<PauseCircleOutlineIcon sx={{width: "100%", height: '100%'}}/>}/> :
+                            typeIcon={<PauseCircleOutlineIcon sx={{width: "100%", height: '100%', position: 'relative', right: '0'}}/>}/> :
                         <IconButtons color={"success"} onClick={() => {
                             setStatus(true)
                             return props.setSecondTimer(time, props.id, props.trackName, true, Date.now())

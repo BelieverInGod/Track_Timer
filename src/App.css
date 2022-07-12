@@ -1,1 +1,10 @@
+.App {
+    transition: 2s;
+}
 
+@media screen and (max-width: 1300px) {
+    .App {
+      width: 350px;
+      transition: 2s;
+    }
+}

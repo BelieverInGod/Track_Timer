@@ -30,7 +30,6 @@ function Tracker(props) {
                 acc.push(JSON.parse(localStorage.getItem(k)))
                 return acc
             }, []);
-            console.log(items)
             props.setLocalData(items)
         }
     }, [])
